@@ -1,0 +1,28 @@
+---
+- hosts: all
+  tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+
+    - name: Verify Packages
+      assert:
+        that: "'{{ item }}' in ansible_facts.packages"
+      with_items:
+        - git
+        - tmux
+        - vim
+        - zsh
+
+    - name: Get the status of the file
+      stat:
+        path: '{{ item }}'
+      register: status
+      with_items:
+        - '~/github/mrxcitement/dot-vim'
+        - '~/github/mrxcitement/dot-zsh'
+
+    - name: Assert the status of the file is correct
+      assert:
+        that: '{{ item.stat.exists }}'
+      with_items: '{{ status.results }}'
