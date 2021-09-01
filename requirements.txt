@@ -1,3 +1,4 @@
 molecule[ansible,lint]
 molecule-vagrant
 python-vagrant
+wheel
