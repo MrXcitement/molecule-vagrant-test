@@ -42,6 +42,7 @@ jobs:
       - name: Install pip requirements in virtual environemnt
         run: |
           source .venv/bin/activate
+          pip install --no-input --no-cache-dir wheel
           pip install --no-input --no-cache-dir -r requirements.txt
         shell: bash
 
