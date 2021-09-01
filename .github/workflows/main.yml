@@ -39,8 +39,13 @@ jobs:
           wget -nv https://releases.hashicorp.com/vagrant/2.2.18/vagrant_2.2.18_x86_64.deb
           sudo dpkg -i vagrant_2.2.18_x86_64.deb
 
-      - name: Install vagrant-libvirt Vagrant plugin
-        run: sudo vagrant plugin install vagrant-libvirt
+      - name: Install Vagrant plugin - vagrant-libvirt
+        run: vagrant plugin install vagrant-libvirt
+        
+      - name: Check vagrant version and list plugins
+        run: |
+          vagrant --version
+          vagrant plugin list
 
       - name: Install pip requirements
         run: |
