@@ -27,6 +27,20 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Install vagrant libvirt requirements
+        run: |
+          apt-get update
+          apt-get install -y bridge-utils dnsmasq-base ebtables libvirt-bin libvirt-dev qemu-kvm qemu-utils ruby-dev
+        shell: bash
+      
+      - name: Download & Install Vagrant package
+        run: |
+          wget -nv https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.deb
+          dpkg -i vagrant_2.2.7_x86_64.deb
+
+      - name: Install vagrant-libvirt Vagrant plugin
+        run: vagrant plugin install vagrant-libvirt
+
       - name: Install pip requirements
         run: |
           python3 -m pip install --no-input --no-cache-dir -r requirements.txt
