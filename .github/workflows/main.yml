@@ -35,9 +35,16 @@ jobs:
 
       - name: Create and activate virtual environment
         run: |
-          python3 -m venv .venv
+          python3.9 -m venv .venv
           source .venv/bin/activate
+        shell: bash
     
+      - name: Check python and pip
+        run: |
+          python --version
+          pip --version
+        shell: bash
+      
       - name: Install pip requirements
         run: |
           pip install --no-input --no-cache-dir -r requirements.txt
