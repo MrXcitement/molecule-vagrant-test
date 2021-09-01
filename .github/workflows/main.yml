@@ -34,18 +34,27 @@ jobs:
           sudo apt-get install -y bridge-utils dnsmasq-base ebtables ruby-dev
         shell: bash
       
+      - name: Add current user to libvirt group
+        run: |
+          sudo usermod -a -G libvirt $USER
+          newgrp libvirt
+        shell: bash
+        
       - name: Download & Install Vagrant package
         run: |
           wget -nv https://releases.hashicorp.com/vagrant/2.2.18/vagrant_2.2.18_x86_64.deb
           sudo dpkg -i vagrant_2.2.18_x86_64.deb
+        shell: bash
 
       - name: Install Vagrant plugin - vagrant-libvirt
         run: vagrant plugin install vagrant-libvirt
+        shell: bash
         
       - name: Check vagrant version and list plugins
         run: |
           vagrant --version
           vagrant plugin list
+        shell: bash
 
       - name: Install pip requirements
         run: |
