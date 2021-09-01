@@ -33,25 +33,22 @@ jobs:
           vagrant plugin list
         shell: bash
 
-      - name: Create and activate virtual environment
+      - name: Create virtual environment
         run: |
           python3.9 -m venv .venv
-          source .venv/bin/activate
         shell: bash
     
-      - name: Check python and pip
-        run: |
-          python --version
-          pip --version
-        shell: bash
       
-      - name: Install pip requirements
+      - name: Install pip requirements in virtual environemnt
         run: |
+          source .venv/bin/activate
           pip install --no-input --no-cache-dir -r requirements.txt
         shell: bash
 
       - name: Run molecule test
-        run: molecule test
+        run: |
+          source .venv/bin/activate
+          molecule test
         shell: bash
         env:
           ANSIBLE_FORCE_COLOR: true
