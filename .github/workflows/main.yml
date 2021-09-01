@@ -19,36 +19,13 @@ jobs:
   molecule:
   
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: macos-10.15
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: Install vagrant libvirt requirements
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y qemu-kvm qemu-utils libvirt-clients libvirt-daemon-system libvirt-dev
-          sudo apt-get install -y bridge-utils dnsmasq-base ebtables ruby-dev
-        shell: bash
-      
-      - name: Add current user to libvirt group
-        run: |
-          sudo usermod -a -G libvirt $USER
-          newgrp libvirt
-        shell: bash
-        
-      - name: Download & Install Vagrant package
-        run: |
-          wget -nv https://releases.hashicorp.com/vagrant/2.2.18/vagrant_2.2.18_x86_64.deb
-          sudo dpkg -i vagrant_2.2.18_x86_64.deb
-        shell: bash
-
-      - name: Install Vagrant plugin - vagrant-libvirt
-        run: vagrant plugin install vagrant-libvirt
-        shell: bash
         
       - name: Check vagrant version and list plugins
         run: |
@@ -56,9 +33,14 @@ jobs:
           vagrant plugin list
         shell: bash
 
+      - name: Create and activate virtual environment
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+    
       - name: Install pip requirements
         run: |
-          python3 -m pip install --no-input --no-cache-dir -r requirements.txt
+          pip install --no-input --no-cache-dir -r requirements.txt
         shell: bash
 
       - name: Run molecule test
